@@ -2,7 +2,6 @@ const ActorsSystem = require('../main.js');
 const nodemailer = require('nodemailer');
 const auth = require('../config');
 
-
 ActorsSystem.register(class Mailer {
 	
 	message(data) {
@@ -14,7 +13,7 @@ ActorsSystem.register(class Mailer {
 		let transporter = nodemailer.createTransport({
 			host: 'smtp.yandex.ru',
 			port: 587,
-			secure: false, // true for 465, false for other ports
+			secure: false,
 			auth
 		});
 		try {
@@ -24,7 +23,7 @@ ActorsSystem.register(class Mailer {
 				subject: "Server notification", // Subject line
 				text: data, // plain text body
 			})
-			console.log(info.messageId);
+			console.log(`Message white id "${info.messageId}" has sent`);
 		} catch (err) {
 			console.log(err);
 		}

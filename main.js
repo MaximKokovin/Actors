@@ -13,8 +13,7 @@ class AcrorsSystem {
 	
 	static start(name) {
 		const nameToLowerCase = name.toLowerCase()
-		require(`./actors/${nameToLowerCase}.js`)
-		console.dir(actors)
+		require(`./actors/${nameToLowerCase}.js`);
 		const {Actor, instances} = actors.get(name);
 		if (Actor) {
 			const actor = new Actor();

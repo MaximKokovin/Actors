@@ -10,6 +10,6 @@ ActorsSystem.register(class Root {
 	async stop() {
 		await ActorsSystem.exit('Mailer');
 		//await ActorsSystem.exit('Renderer');
-		await ActorsSustem.exit('Observer');
+		await ActorsSystem.exit('Observer');
 	}
 })
