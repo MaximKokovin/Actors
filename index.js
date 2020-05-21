@@ -1,18 +1,22 @@
-const ActorsSystem = require('./main.js');
+const MasterSystem = require('./main.js');
 const {fork} = require('child_process');
-
-const SHUTDOWN_TIMEOUT = 4000;
+const SHUTDOWN_TIMEOUT = 6000;
+const GRACEFULL_TIMEOUT = 5000;
 
 const child = fork('./server.js');
 
-ActorsSystem.start('Root');
+MasterSystem.start('Root');
 
 process.on('SIGINT', async () => {
+	MasterSystem.exit('Root');
+	setTimeout(() => {
+		console.log('GRACEFULL SHOTDOWN');
+		process.exit(0);
+	}, GRACEFULL_TIMEOUT)
 	setTimeout(() => {
 		process.exit(1);
 	}, SHUTDOWN_TIMEOUT);
 	
-	await ActorsSystem.exit('Root');
-	console.log('GRACEFULL SHOTDOWN');
-	process.exit(0);
+	
+	
 })

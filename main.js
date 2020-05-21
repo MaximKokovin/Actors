@@ -1,54 +1,40 @@
 const actors = new Map();
+const {fork} = require('child_process');
 
-class AcrorsSystem {
-	static register(Actor) {
-		if (Actor) {
-			const name = Actor.name;
-			const queue = [];
-			const instances = [];
-			const ready = [];
-			actors.set(name, {Actor, instances, queue});
-		};
-	}
-	
+class MasterSystem {
 	static start(name) {
-		const nameToLowerCase = name.toLowerCase()
-		require(`./actors/${nameToLowerCase}.js`);
-		const {Actor, instances} = actors.get(name);
-		if (Actor) {
-			const actor = new Actor();
-			instances.push(actor);
-		}
-	}
-	
-	static async send(receiver, data) {
-		const record = actors.get(receiver);
-		const {instances, queue} = record;
-		const actor = instances.shift();
-		
-		if (!actor) {
-			queue.push(data);
-			return;
-		}
-		
-		await actor.message(data);
-		while (queue.length > 0) {
-			const data = queue.shift();
-			await actor.message(data);
-		}
+		const queu =[];
+		const instances = [];
+		const actor = fork('./worker.js');
 		instances.push(actor);
-		/*
-		if (queue.length) {
-			await Promise.all(queue.map( data => actor.message(data) ))
-		}
-		*/
+		actors.set(name, {actor, instances, queu});
+		console.log({command: 'start', param:name});
+		actor.send({command: 'start', param:name});
+		MasterSystem.subscribe(actor);
 	}
 	
-	static async exit (name) {
+	static send(params) {
+		const {reciever, data} = params;
+		const record = actors.get(reciever);
+		const {actor} = record; 
+		actor.send({command: 'message', param:data});
+		
+	}
+	
+	static exit (name) {
 		const record = actors.get(name);
-		const {instances} = record;
-		await Promise.all(instances.map(instance => instance.stop() ))
+		const {actor} = record;
+		actor.send({command: 'exit'});
+	}
+	
+	static subscribe(actor) {
+		actor.on('message', (message) => {
+			const {command, param} = message;
+			MasterSystem[command](param);
+		});
 	}
 }
 
-module.exports = AcrorsSystem;
+
+
+module.exports = MasterSystem;

@@ -1,4 +1,4 @@
-const ActorsSystem = require('../main.js');
+const ActorsSystem = require('../worker.js');
 const http = require('http');
 const URL = 'http:localhost:8000/test'
 

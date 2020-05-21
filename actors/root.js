@@ -1,4 +1,4 @@
-const ActorsSystem = require('../main.js');
+const ActorsSystem = require('../worker.js');
 
 ActorsSystem.register(class Root {
 	constructor() {
@@ -8,6 +8,7 @@ ActorsSystem.register(class Root {
 	}
 	
 	async stop() {
+		console.log('stop in root')
 		await ActorsSystem.exit('Mailer');
 		//await ActorsSystem.exit('Renderer');
 		await ActorsSystem.exit('Observer');

@@ -1,4 +1,4 @@
-const ActorsSystem = require('../main.js');
+const ActorsSystem = require('../worker.js');
 const nodemailer = require('nodemailer');
 const auth = require('../config');
 
