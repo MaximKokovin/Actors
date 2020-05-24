@@ -1,34 +1,35 @@
 const actors = new Map();
 const {fork} = require('child_process');
+const {Worker} = require('worker_threads');
 
 class MasterSystem {
 	static start(name) {
 		const queu =[];
 		const instances = [];
-		const actor = fork('./worker.js');
-		instances.push(actor);
-		actors.set(name, {actor, instances, queu});
+		const worker = new Worker('./worker.js',{workerData: name});
+		instances.push(worker);
+		actors.set(name, {worker, instances, queu});
 		console.log({command: 'start', param:name});
-		actor.send({command: 'start', param:name});
-		MasterSystem.subscribe(actor);
+		worker.postMessage({command: 'start'});
+		MasterSystem.subscribe(worker);
 	}
 	
 	static send(params) {
 		const {reciever, data} = params;
 		const record = actors.get(reciever);
-		const {actor} = record; 
-		actor.send({command: 'message', param:data});
+		const {worker} = record; 
+		worker.postMessage({command: 'message', param:data});
 		
 	}
 	
 	static exit (name) {
 		const record = actors.get(name);
-		const {actor} = record;
-		actor.send({command: 'exit'});
+		const {worker} = record;
+		worker.postMessage({command: 'exit'});
 	}
 	
-	static subscribe(actor) {
-		actor.on('message', (message) => {
+	static subscribe(worker) {
+		worker.on('message', (message) => {
 			const {command, param} = message;
 			MasterSystem[command](param);
 		});

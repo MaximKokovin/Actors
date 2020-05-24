@@ -1,4 +1,5 @@
 const SHUTDOWN_TIMEOUT = 4000;
+const {parentPort, workerData} = require('worker_threads');
 
 class ActorsSystem {
 	static register(actor) {
@@ -6,26 +7,27 @@ class ActorsSystem {
 	}
 	
 	static start(name) {
-		process.send({command: 'start', param:name})
+		parentPort.postMessage({command: 'start', param:name})
 	}
 	
 	static send(reciever, data) {
-		process.send({command: 'send', param: {reciever, data}})
+		parentPort.postMessage({command: 'send', param: {reciever, data}})
 	}
 	
 	static async exit(name) {
-		process.send({command: 'exit', param: name});
+		parentPort.postMessage({command: 'exit', param: name});
 	}
 }
 ActorsSystem.actorInstance = null;
 
-process.on('message', async (message) => {
+parentPort.on('message', async (message) => {
 	const {command, param} = message;
 	if (command === 'start') {
-		require(`./actors/${param.toLowerCase()}.js`);
+		console.log(`workerData ${workerData}`);
+		require(`./actors/${workerData.toLowerCase()}.js`);
 		const actorClass = ActorsSystem.actorClass;
 		ActorsSystem.actorInstance = new actorClass();
-		console.log(`Actor ${param} has started`);
+		console.log(`Actor ${workerData} has started`);
 	};
 	
 	if (command === 'message') {
