@@ -1,15 +1,17 @@
 const MasterSystem = require('./main.js');
 const {fork} = require('child_process');
-const Factory = require('./realization');
-const {type} = require('realization');
+//const Factory = require('./realization');
+const {realizationType} = require('./config');
 
 const SHUTDOWN_TIMEOUT = 6000;
 const GRACEFULL_TIMEOUT = 5000;
 
 fork('./server.js');
 
-const communication = Factory.create(type);
+const communication = require(`./realization/${realizationType}`);
 communication.start('Root');
+/*Factory.create(type);
+communication.start('Root');*/
 
 process.on('SIGINT', async () => {
 	MasterSystem.exit('Root');
