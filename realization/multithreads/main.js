@@ -8,7 +8,6 @@ class MasterSystem {
 		const worker = new Worker('./realization/multithreads/worker.js',{workerData: name});
 		instances.push(worker);
 		actors.set(name, {worker, instances, queu});
-		console.log({command: 'start', param:name});
 		worker.postMessage({command: 'start'});
 		MasterSystem.subscribe(worker);
 	}
