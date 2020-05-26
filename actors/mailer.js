@@ -1,6 +1,6 @@
-const ActorsSystem = require('../worker.js');
+const {realizationType, auth} = require('../config');
+const ActorsSystem = require(`../realization/${realizationType}`);
 const nodemailer = require('nodemailer');
-const {auth} = require('../config');
 
 ActorsSystem.register(class Mailer {
 	

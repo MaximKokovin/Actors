@@ -1,4 +1,5 @@
-const ActorsSystem = require('../worker.js');
+const {realizationType} = require('../config');
+const ActorsSystem = require(`../realization/${realizationType}`);
 
 ActorsSystem.register(class Root {
 	constructor() {

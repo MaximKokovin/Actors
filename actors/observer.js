@@ -1,4 +1,5 @@
-const ActorsSystem = require('../worker.js');
+const {realizationType} = require('../config');
+const ActorsSystem = require(`../realization/${realizationType}`);
 const http = require('http');
 const URL = 'http:localhost:8000/test'
 
