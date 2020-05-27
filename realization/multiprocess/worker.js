@@ -1,12 +1,11 @@
 const SHUTDOWN_TIMEOUT = 4000;
-
+const log = require('../../libs/logger')
 class ActorsSystem {
 	static register(actor) {
 		this.actorClass = actor;
 	}
 	
 	static start(name) {
-		console.log(name);
 		process.send({command: 'start', param:name});
 	}
 	
@@ -25,9 +24,8 @@ process.on('message', async (message) => {
 	if (command === 'start') {
 		require(`../../actors/${param.toLowerCase()}.js`);
 		const actorClass = ActorsSystem.actorClass;
-		console.log(actorClass);
 		ActorsSystem.actorInstance = new actorClass();
-		console.log(`Actor ${param} has started`);
+		log.info(`Actor ${param} has started`);
 	};
 	
 	if (command === 'message') {

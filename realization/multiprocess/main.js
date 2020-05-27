@@ -1,16 +1,16 @@
 const actors = new Map();
 const {fork} = require('child_process');
-
+const log = require('../../libs/logger');
 class MasterSystem {
 	static  start(name) {
 		const queu =[];
 		const instances = [];
 		if (!process.channel){
-			console.log(`MasterSystem name ${name}`)
+			log.info(`MasterSystem name ${name}`)
 			const actor =  fork('./realization/multiprocess/index.js');
 			instances.push(actor);
 			actors.set(name, {actor, instances, queu});
-			console.log({command: 'start', param:name});
+			log.info({command: 'start', param:name});
 			MasterSystem.subscribe(actor);
 			actor.send({command: 'start', param:name});
 		}

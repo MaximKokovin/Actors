@@ -1,5 +1,6 @@
 const {realizationType} = require('../config');
 const ActorsSystem = require(`../realization/${realizationType}`);
+const log = require('../libs/logger');
 
 ActorsSystem.register(class Root {
 	constructor() {
@@ -9,7 +10,7 @@ ActorsSystem.register(class Root {
 	}
 	
 	async stop() {
-		console.log('stop in root')
+		log.info('Stop in root')
 		await ActorsSystem.exit('Mailer');
 		//await ActorsSystem.exit('Renderer');
 		await ActorsSystem.exit('Observer');

@@ -1,5 +1,5 @@
 const http = require('http');
-
+const log = require('./libs/logger')
 const httpError = (res, status, msg='') => {
 	res.status = status;
 	res.end(msg);
@@ -14,8 +14,6 @@ const receiveArguments = req => {
 		req.on('end', () => {
 			const data = buffer.join('');
 			const parsedData = JSON.parse(data);
-			console.log('parsedData');
-			console.log(parsedData);
 			resolve(parsedData);
 		})
 	})
@@ -32,7 +30,7 @@ http.createServer(async (req, res)=> {
 			res.status = 200;
 			res.end(JSON.stringify({data:'Server is active.'}));
 		} catch (err) {
-			console.log(err);
+			log.error(err);
 			httpError(res, 502, 'Server error');
 		}
 		
@@ -42,6 +40,6 @@ http.createServer(async (req, res)=> {
 	
 	
 }).listen(8000, () => {
-	console.log('Server is listening on port 8000')
+	log.info('Server is listening on port 8000')
 });
 

@@ -1,7 +1,8 @@
 const {realizationType} = require('../config');
 const ActorsSystem = require(`../realization/${realizationType}`);
 const http = require('http');
-const URL = 'http:localhost:8000/test'
+const log = require('../libs/logger');
+const URL = 'http:localhost:8000/test';
 
 const getResponseData = res => new Promise(resolve => {
 	const buffer = []
@@ -49,6 +50,6 @@ ActorsSystem.register(class Observer {
 	
 	async stop() {
 		clearInterval(this.observer); 
-		console.log('Observer has stoped;')
+		log.info('Observer has stoped;')
 	}
 })

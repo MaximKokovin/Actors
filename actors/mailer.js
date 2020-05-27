@@ -1,6 +1,7 @@
 const {realizationType, auth} = require('../config');
 const ActorsSystem = require(`../realization/${realizationType}`);
 const nodemailer = require('nodemailer');
+const log = require('../libs/logger')
 
 ActorsSystem.register(class Mailer {
 	
@@ -9,7 +10,7 @@ ActorsSystem.register(class Mailer {
 	}
 	
 	async sendEmail(data) {
-		console.log(auth)
+		log.info(auth)
 		let transporter = nodemailer.createTransport({
 			host: 'smtp.yandex.ru',
 			port: 587,
@@ -23,14 +24,14 @@ ActorsSystem.register(class Mailer {
 				subject: "Server notification", // Subject line
 				text: data, // plain text body
 			})
-			console.log(`Message white id "${info.messageId}" has sent`);
+			log.info(`Message white id "${info.messageId}" has sent`);
 		} catch (err) {
-			console.log(err);
+			log.error(err);
 		}
 		
 	}
 	
 	async stop() {
-		console.log('Mailer has stoped;')
+		log.info('Mailer has stoped;')
 	}
 })
