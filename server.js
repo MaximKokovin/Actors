@@ -1,5 +1,5 @@
 const http = require('http');
-const log = require('./libs/logger')
+const log = require('./libs/logger');
 const httpError = (res, status, msg='') => {
 	res.status = status;
 	res.end(msg);
