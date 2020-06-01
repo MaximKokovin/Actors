@@ -1,7 +1,0 @@
-{"level":30,"time":"2020-05-27T00:39:38.077Z","msg":"Server is listening on port 8000"}
-{"level":30,"time":"2020-05-27T00:39:43.055Z","user":"kokovin.maxim@yandex.ru","pass":"DjLfyandex91%RjVf"}
-{"level":30,"time":"2020-05-27T00:39:45.422Z","msg":"Message white id \"<9e6f2157-503e-5e26-125a-713934215859@yandex.ru>\" has sent"}
-{"level":30,"time":"2020-05-27T00:39:57.747Z","msg":"Stop in root"}
-{"level":30,"time":"2020-05-27T00:39:57.747Z","msg":"Mailer has stoped;"}
-{"level":30,"time":"2020-05-27T00:39:57.748Z","msg":"Observer has stoped;"}
-{"level":30,"time":"2020-05-27T00:40:02.747Z","msg":"GRACEFULL SHOTDOWN"}
